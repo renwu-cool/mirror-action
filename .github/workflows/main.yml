@@ -1,0 +1,36 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  mirror:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: github2gitee
+      uses: Yikun/hub-mirror-action@v0.08
+      with:
+        # The private SSH key which is used to to push code in destination hub.
+        dst_key: ${{ secrets.KEY }}
+        # The app token which is used to  create repo in destination hub.
+        dst_token: ${{ secrets.TOKEN_GITEE }}
+        # Destination name. Such as `gitee/kunpengcompute`.
+        dst: gitee/renwu-cool
+        # Source name. Such as `github/kunpengcompute`.
+        src: github/renwu-cool
+        account_type: org
